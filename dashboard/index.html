@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Federal Workforce Analytics | Strategic Growth Partners</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-900: #0c1929;
+            --navy-800: #1a2744;
+            --navy-700: #243352;
+            --navy-600: #334766;
+            --blue-500: #3b82f6;
+            --blue-400: #60a5fa;
+            --blue-300: #93c5fd;
+            --teal-500: #14b8a6;
+            --teal-400: #2dd4bf;
+            --amber-500: #f59e0b;
+            --red-500: #ef4444;
+            --green-500: #22c55e;
+            --purple-500: #8b5cf6;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 100%);
+            color: var(--white);
+            padding: 1.5rem 2rem 5rem;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--gray-100);
+            clip-path: ellipse(70% 100% at 50% 100%);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .sgp-logo {
+            height: 28px;
+            width: auto;
+        }
+
+        .logo-divider {
+            width: 1px;
+            height: 24px;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .logo-text {
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .header-badge {
+            background: rgba(255,255,255,0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.25rem;
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: var(--gray-300);
+        }
+
+        /* Global Filter Bar */
+        .filter-bar {
+            max-width: 1400px;
+            margin: -2.5rem auto 1.5rem;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 20;
+        }
+
+        .filter-bar-inner {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            min-width: 200px;
+            flex: 1;
+        }
+
+        .filter-label {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-select {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.875rem;
+            background: var(--white);
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+
+        .filter-reset {
+            padding: 0.5rem 1rem;
+            background: var(--gray-100);
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+
+        .filter-reset:hover {
+            background: var(--gray-200);
+        }
+
+        .active-filters {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--gray-200);
+            width: 100%;
+        }
+
+        .filter-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.625rem;
+            background: var(--blue-500);
+            color: white;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .filter-tag-remove {
+            cursor: pointer;
+            opacity: 0.8;
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .filter-tag-remove:hover { opacity: 1; }
+
+        .no-filters {
+            font-size: 0.8125rem;
+            color: var(--gray-400);
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            max-width: 1400px;
+            margin: 0 auto 1.5rem;
+            padding: 0 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.375rem;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--navy-800);
+            letter-spacing: -0.025em;
+        }
+
+        .stat-change {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .stat-change.positive { color: var(--green-500); }
+        .stat-change.negative { color: var(--red-500); }
+
+        /* Main Content */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 0.375rem;
+            margin-bottom: 1.5rem;
+            background: var(--white);
+            padding: 0.375rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 0.625rem 1.25rem;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover {
+            background: var(--gray-100);
+            color: var(--gray-800);
+        }
+
+        .nav-tab.active {
+            background: var(--navy-800);
+            color: var(--white);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .card-body { padding: 1.25rem; }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            background: var(--gray-100);
+            border-radius: 6px;
+            padding: 0.25rem;
+        }
+
+        .view-toggle-btn {
+            padding: 0.375rem 0.75rem;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .view-toggle-btn.active {
+            background: var(--white);
+            color: var(--gray-800);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-3 { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.5rem; }
+            .filter-bar-inner { flex-direction: column; }
+            .filter-group { width: 100%; }
+        }
+
+        /* Charts */
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .chart-container.tall { height: 380px; }
+        .chart-container.map { height: 420px; }
+
+        /* US Map */
+        .us-map-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .us-map {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+        }
+
+        .us-map path {
+            stroke: var(--white);
+            stroke-width: 1;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .us-map path:hover {
+            opacity: 0.8;
+            stroke-width: 2;
+        }
+
+        .map-legend {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(255,255,255,0.95);
+            padding: 0.75rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            font-size: 0.75rem;
+        }
+
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gray-700);
+        }
+
+        .legend-scale {
+            display: flex;
+            height: 12px;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 0.25rem;
+        }
+
+        .legend-labels {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray-500);
+            font-size: 0.6875rem;
+        }
+
+        .map-tooltip {
+            position: absolute;
+            background: var(--navy-800);
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            pointer-events: none;
+            z-index: 100;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .map-tooltip.visible { opacity: 1; }
+
+        .tooltip-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .tooltip-value {
+            color: var(--blue-300);
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .data-table th {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: var(--gray-50);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .data-table th.sortable {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .data-table th.sortable:hover { background: var(--gray-100); }
+
+        .data-table th .sort-icon {
+            margin-left: 0.25rem;
+            opacity: 0.5;
+        }
+
+        .data-table th.sorted .sort-icon { opacity: 1; }
+
+        .data-table td { font-size: 0.875rem; }
+
+        .data-table tbody tr:hover { background: var(--gray-50); }
+
+        .data-table .number {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .data-table tbody tr:last-child td { border-bottom: none; }
+
+        .data-table tbody tr.selected {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Search */
+        .search-input {
+            width: 100%;
+            max-width: 300px;
+            padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.875rem;
+            background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E") no-repeat 0.625rem center;
+            background-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+
+        /* Tab Content */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Compare Section */
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .compare-grid { grid-template-columns: 1fr; }
+        }
+
+        .compare-select {
+            width: 100%;
+            padding: 0.625rem 0.875rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.875rem;
+            background: var(--white);
+            cursor: pointer;
+        }
+
+        .compare-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.875rem 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .compare-stat:last-child { border-bottom: none; }
+
+        .compare-stat-label {
+            color: var(--gray-600);
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .compare-stat-value {
+            font-weight: 600;
+            color: var(--navy-800);
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--gray-500);
+            font-size: 0.8125rem;
+            border-top: 1px solid var(--gray-200);
+            background: var(--white);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--gray-100); }
+        ::-webkit-scrollbar-thumb { background: var(--gray-400); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gray-500); }
+
+        /* Utilities */
+        .hidden { display: none !important; }
+        .text-right { text-align: right; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-top">
+                <div class="logo-container">
+                    <svg class="sgp-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 185.6 28.3"><defs><style>.sgp-fill{fill:#fff;}</style></defs><path class="sgp-fill" d="M23.8,11h3.3c.6,0,1.1-.5,1.1-1.1V1.3c0-.6-.5-1.1-1.1-1.1h-8.7c-.6,0-1.1.5-1.1,1.1v3.3c0,.6.5,1.1,1.1,1.1h3.3c.6,0,1.1.5,1.1,1.1v3.3c0,.6.5,1.1,1.1,1.1Z"/><path class="sgp-fill" d="M8.7,9.9v3.3c0,.6.5,1.1,1.1,1.1h3.3c.6,0,1.1.5,1.1,1.1v3.3c0,.6.5,1.1,1.1,1.1h3.3c.6,0,1.1-.5,1.1-1.1v-8.7c0-.6-.5-1.1-1.1-1.1h-8.7c-.6,0-1.1.5-1.1,1.1Z"/><path class="sgp-fill" d="M10.8,27.3v-8.7c0-.6-.5-1.1-1.1-1.1H1.1c-.6,0-1.1.5-1.1,1.1v3.3c0,.6.5,1.1,1.1,1.1h3.3c.6,0,1.1.5,1.1,1.1v3.3c0,.6.5,1.1,1.1,1.1h3.3c.6,0,1.1-.5,1.1-1.1Z"/><path class="sgp-fill" d="M40.5,13.3c-1.5,0-2.9-.8-3.5-2.9l-2.2.8c.7,2.9,3,4.3,5.7,4.3s5.2-1.9,5.2-4.5-2.4-3.4-3.8-3.9l-1.5-.5c-1.1-.4-2.7-.9-2.7-2.3s1-1.9,2.4-1.9,2.4.8,2.9,2.2l2.2-.9c-.5-1.9-2.4-3.4-5-3.4s-5,1.6-5,4.2,2.5,3.7,3.9,4.1l1.3.4c1.3.4,2.7.8,2.7,2.2s-1.3,2.1-2.7,2.1Z"/><path class="sgp-fill" d="M53,6.8v-2h-2.9V1.8h-2.2v3h-2.1v2h2.1v5.1c0,1.1,0,3.6,3.2,3.6s1.4-.1,1.9-.4v-2c-.5.3-1,.4-1.5.4-1.4,0-1.4-1.3-1.4-2.3v-4.4h2.9Z"/><path class="sgp-fill" d="M54.5,4.8v10.4h2.2v-4.3c0-1.7.5-3.9,2.9-3.9s.9,0,1.3.2v-2.5c-.4-.1-.7-.2-1-.2-1.4,0-2.5.9-3.1,2.1h0v-1.8h-2.2Z"/><path class="sgp-fill" d="M70.4,11.9v-3.8c0-2.4-1.7-3.6-4.1-3.6s-3.8.8-4.4,2.9l2.1.7c.4-1.2,1.2-1.8,2.3-1.8s1.9.7,1.9,1.6-.9,1-3.1,1.5c-1.9.4-3.5,1.2-3.5,3.1s1.7,2.9,3.4,2.9,2.7-.8,3.3-1.9h0c0,.6,0,1.1.2,1.6h2.2c-.2-.8-.3-1.5-.3-3.3ZM68.1,11.2c0,1.2-1,2.6-2.6,2.6s-1.6-.5-1.6-1.3,1.1-1.4,2.1-1.6c.8-.2,1.6-.4,2.2-.7v1Z"/><path class="sgp-fill" d="M78.2,6.8v-2h-2.9V1.8h-2.2v3h-2.1v2h2.1v5.1c0,1.1,0,3.6,3.2,3.6s1.4-.1,1.9-.4v-2c-.5.3-1,.4-1.5.4-1.4,0-1.4-1.3-1.4-2.3v-4.4h2.9Z"/><path class="sgp-fill" d="M89,9.9c0-3.9-2.5-5.4-4.9-5.4s-5.2,2.3-5.2,5.5,2.3,5.5,5.3,5.5,4.2-1.3,4.9-3.1l-2.1-.8c-.5,1.2-1.5,2-2.8,2s-2.9-1.1-3.1-2.9h7.9v-.7ZM81.2,9c.3-1.5,1.3-2.6,2.8-2.6s2.6.7,2.7,2.6h-5.5Z"/><path class="sgp-fill" d="M95.3,17.7c-1.4,0-2.3-.6-2.8-1.8l-2,.7c.9,2.4,2.9,3,4.9,3s5.1-1.3,5.1-5.5V4.8h-2.2v1.6h0c-.7-1.1-1.8-1.9-3.4-1.9-2.7,0-4.7,2.2-4.7,5.3s1.8,5.3,4.8,5.3,2.6-.5,3.3-1.8h0v.7c0,2.6-1.2,3.6-2.9,3.6ZM95.3,13c-1.7,0-2.9-1.4-2.9-3.3s1.2-3.2,2.9-3.2,3,1.4,3,3.2-1.3,3.3-3,3.3Z"/><path class="sgp-fill" d="M103.3,0c-.8,0-1.5.7-1.5,1.4s.6,1.5,1.5,1.5,1.4-.7,1.4-1.5-.6-1.4-1.4-1.4Z"/><rect class="sgp-fill" x="102.1" y="4.8" width="2.2" height="10.4"/><path class="sgp-fill" d="M111,6.6c1.2,0,2.2.6,2.7,1.9l2.1-.8c-.8-2.1-2.6-3.2-4.7-3.2-3,0-5.3,2.1-5.3,5.5s2.3,5.5,5.3,5.5,4.2-1.3,5-3.4l-2.1-.8c-.5,1.3-1.6,2.1-2.9,2.1s-3-1.3-3-3.4,1.2-3.4,3-3.4Z"/><path class="sgp-fill" d="M124.6,2.5c2.1,0,3.7,1.3,4.4,3.1l2.2-.9c-1-2.7-3.5-4.5-6.6-4.5s-7.4,2.9-7.4,7.6,3,7.6,7.2,7.6,4.1-1,5.1-2.8h0v2.5h1.9v-7.4h-6.6v1.9h4.2c-.3,2.1-2.1,3.6-4.4,3.6s-5.1-1.4-5.1-5.3,2.2-5.5,4.9-5.5Z"/><path class="sgp-fill" d="M133.3,4.8v10.4h2.2v-4.3c0-1.7.5-3.9,2.9-3.9s.9,0,1.3.2v-2.5c-.4-.1-.7-.2-1-.2-1.4,0-2.5.9-3.1,2.1h0v-1.8h-2.2Z"/><path class="sgp-fill" d="M145.2,4.5c-3.1,0-5.3,2.3-5.3,5.5s2.2,5.5,5.3,5.5,5.3-2.3,5.3-5.5-2.2-5.5-5.3-5.5ZM145.2,13.4c-1.8,0-3-1.4-3-3.4s1.2-3.4,3-3.4,3,1.4,3,3.4-1.2,3.4-3,3.4Z"/><path class="sgp-fill" d="M156.2,15.2c.8-2.4,1.6-4.8,2.4-7.2h0c.7,2.4,1.5,4.8,2.3,7.2h2.6l3.5-10.4h-2.5c-.8,2.5-1.6,5-2.4,7.5h0c-.8-2.5-1.7-5-2.5-7.5h-2c-.8,2.5-1.7,5-2.5,7.5h0c-.8-2.5-1.6-5-2.4-7.5h-2.5l3.5,10.4h2.6Z"/><path class="sgp-fill" d="M170,1.8v3h-2.1v2h2.1v5.1c0,1.1,0,3.6,3.2,3.6s1.4-.1,1.9-.4v-2c-.5.3-1,.4-1.5.4-1.4,0-1.4-1.3-1.4-2.3v-4.4h2.9v-2h-2.9V1.8h-2.2Z"/><path class="sgp-fill" d="M181.9,4.5c-1.3,0-2.5.6-3.3,2h0V.2h-2.2v15h2.2v-5.5c0-1.9,1.1-3.1,2.6-3.1s2.2,1.3,2.2,3v5.6h2.2v-6.5c0-2.9-1.8-4.1-3.7-4.1Z"/></svg>
+                    <div class="logo-divider"></div>
+                    <span class="logo-text">Federal Workforce Analytics</span>
+                </div>
+                <div class="header-badge">November 2025 Data</div>
+            </div>
+            <h1>Federal Employment Dashboard</h1>
+            <p>Interactive analysis across all federal agencies and locations</p>
+        </div>
+    </header>
+
+    <!-- Global Filter Bar -->
+    <div class="filter-bar">
+        <div class="filter-bar-inner">
+            <div class="filter-group">
+                <span class="filter-label">Agency</span>
+                <select class="filter-select" id="filter-agency">
+                    <option value="">All Agencies</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">State</span>
+                <select class="filter-select" id="filter-state">
+                    <option value="">All States</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Pay Range</span>
+                <select class="filter-select" id="filter-pay">
+                    <option value="">All Ranges</option>
+                    <option value="under50">Under $50K</option>
+                    <option value="50-100">$50K - $100K</option>
+                    <option value="100-150">$100K - $150K</option>
+                    <option value="150plus">$150K+</option>
+                </select>
+            </div>
+            <button class="filter-reset" id="filter-reset">Reset Filters</button>
+            <div class="active-filters" id="active-filters">
+                <span class="no-filters">No filters applied - showing all data</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Employees</div>
+                <div class="stat-value" id="stat-employees">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Agencies</div>
+                <div class="stat-value" id="stat-agencies">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Avg Salary</div>
+                <div class="stat-value" id="stat-avg-salary">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Median Salary</div>
+                <div class="stat-value" id="stat-median-salary">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Avg Tenure</div>
+                <div class="stat-value" id="stat-tenure">--</div>
+            </div>
+        </div>
+    </div>
+
+    <main class="main">
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="overview">Overview</button>
+            <button class="nav-tab" data-tab="agencies">Agencies</button>
+            <button class="nav-tab" data-tab="geography">Geography</button>
+            <button class="nav-tab" data-tab="demographics">Demographics</button>
+            <button class="nav-tab" data-tab="compare">Compare</button>
+        </nav>
+
+        <!-- Overview Tab -->
+        <div class="tab-content active" id="tab-overview">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Top 15 Agencies by Headcount</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container tall"><canvas id="chart-top-agencies"></canvas></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Salary Distribution</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container tall"><canvas id="chart-pay-dist"></canvas></div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Employment Type</span></div>
+                    <div class="card-body">
+                        <div class="chart-container"><canvas id="chart-appointment"></canvas></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span class="card-title">STEM vs Non-STEM</span></div>
+                    <div class="card-body">
+                        <div class="chart-container"><canvas id="chart-stem"></canvas></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Supervisory Status</span></div>
+                    <div class="card-body">
+                        <div class="chart-container"><canvas id="chart-supervisory"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agencies Tab -->
+        <div class="tab-content" id="tab-agencies">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">All Federal Agencies</span>
+                    <input type="text" class="search-input" id="agency-search" placeholder="Search agencies...">
+                </div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table class="data-table" id="agency-table">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-sort="agency">Agency <span class="sort-icon">↕</span></th>
+                                    <th class="sortable number" data-sort="employees">Employees <span class="sort-icon">↕</span></th>
+                                    <th class="sortable number" data-sort="avg_pay">Avg Salary <span class="sort-icon">↕</span></th>
+                                    <th class="sortable number" data-sort="median_pay">Median <span class="sort-icon">↕</span></th>
+                                    <th class="sortable number" data-sort="avg_tenure">Tenure <span class="sort-icon">↕</span></th>
+                                    <th class="sortable number" data-sort="avg_grade">Grade <span class="sort-icon">↕</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="agency-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Geography Tab -->
+        <div class="tab-content" id="tab-geography">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Employees by State</span>
+                        <div class="view-toggle" id="geo-view-toggle-1">
+                            <button class="view-toggle-btn active" data-view="chart">Chart</button>
+                            <button class="view-toggle-btn" data-view="map">Map</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container tall" id="geo-chart-1"><canvas id="chart-states"></canvas></div>
+                        <div class="chart-container map hidden" id="geo-map-1"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Average Salary by State</span>
+                        <div class="view-toggle" id="geo-view-toggle-2">
+                            <button class="view-toggle-btn active" data-view="chart">Chart</button>
+                            <button class="view-toggle-btn" data-view="map">Map</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container tall" id="geo-chart-2"><canvas id="chart-state-salary"></canvas></div>
+                        <div class="chart-container map hidden" id="geo-map-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- State Comparison -->
+            <div class="card" style="margin-bottom: 1.25rem;">
+                <div class="card-header">
+                    <span class="card-title">Compare States</span>
+                </div>
+                <div class="card-body">
+                    <div class="compare-grid" style="margin-bottom: 1rem;">
+                        <select class="compare-select" id="state-compare-1"><option value="">Select a state...</option></select>
+                        <select class="compare-select" id="state-compare-2"><option value="">Select a state...</option></select>
+                    </div>
+                    <div class="compare-grid" id="state-compare-results">
+                        <div id="state-compare-body-1" style="color: var(--gray-400);">Select a state above</div>
+                        <div id="state-compare-body-2" style="color: var(--gray-400);">Select a state above</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">State Details</span>
+                    <input type="text" class="search-input" id="state-search" placeholder="Search states...">
+                </div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table class="data-table" id="state-table">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-sort="state">State <span class="sort-icon">↕</span></th>
+                                    <th class="sortable number" data-sort="employees">Employees <span class="sort-icon">↕</span></th>
+                                    <th class="sortable number" data-sort="avg_pay">Avg Salary <span class="sort-icon">↕</span></th>
+                                    <th class="sortable number" data-sort="median_pay">Median <span class="sort-icon">↕</span></th>
+                                    <th class="sortable number" data-sort="avg_tenure">Tenure <span class="sort-icon">↕</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="state-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demographics Tab -->
+        <div class="tab-content" id="tab-demographics">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Age Distribution</span></div>
+                    <div class="card-body">
+                        <div class="chart-container"><canvas id="chart-age"></canvas></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Education Levels</span></div>
+                    <div class="card-body">
+                        <div class="chart-container"><canvas id="chart-education"></canvas></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><span class="card-title">Salary by Education Level</span></div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Education Level</th>
+                                    <th class="number">Employees</th>
+                                    <th class="number">Average Salary</th>
+                                </tr>
+                            </thead>
+                            <tbody id="education-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compare Tab -->
+        <div class="tab-content" id="tab-compare">
+            <div class="card" style="margin-bottom: 1.25rem;">
+                <div class="card-header"><span class="card-title">Select Agencies to Compare</span></div>
+                <div class="card-body">
+                    <div class="compare-grid">
+                        <select class="compare-select" id="compare-1"></select>
+                        <select class="compare-select" id="compare-2"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="compare-grid">
+                <div class="card">
+                    <div class="card-header"><span class="card-title" id="compare-title-1">Select Agency</span></div>
+                    <div class="card-body" id="compare-body-1"><p style="color: var(--gray-400);">Select an agency above</p></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span class="card-title" id="compare-title-2">Select Agency</span></div>
+                    <div class="card-body" id="compare-body-2"><p style="color: var(--gray-400);">Select an agency above</p></div>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 1.25rem;">
+                <div class="card-header"><span class="card-title">Side-by-Side Comparison</span></div>
+                <div class="card-body">
+                    <div class="chart-container"><canvas id="chart-compare"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Data Source: Office of Personnel Management | Analysis by Strategic Growth Partners</p>
+    </footer>
+
+    <!-- Map Tooltip -->
+    <div class="map-tooltip" id="map-tooltip">
+        <div class="tooltip-title"></div>
+        <div class="tooltip-value"></div>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        // Formatting utilities
+        const fmt = {
+            number: (n) => n == null ? '--' : n.toLocaleString('en-US'),
+            currency: (n) => n == null ? '--' : '$' + Math.round(n).toLocaleString('en-US'),
+            decimal: (n, d=1) => n == null ? '--' : n.toFixed(d),
+            short: (n) => {
+                if (n == null) return '--';
+                if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+                if (n >= 1000) return (n/1000).toFixed(0) + 'K';
+                return n.toString();
+            }
+        };
+
+        // Chart.js defaults
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748b';
+        Chart.defaults.plugins.legend.display = false;
+
+        const colors = {
+            blue: '#3b82f6', teal: '#14b8a6', amber: '#f59e0b', red: '#ef4444',
+            purple: '#8b5cf6', pink: '#ec4899', gray: '#94a3b8', green: '#22c55e',
+            palette: ['#3b82f6', '#14b8a6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16']
+        };
+
+        // State abbreviation to full name mapping
+        const stateNames = {
+            'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', 'CA': 'California',
+            'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware', 'DC': 'District of Columbia', 'FL': 'Florida',
+            'GA': 'Georgia', 'HI': 'Hawaii', 'ID': 'Idaho', 'IL': 'Illinois', 'IN': 'Indiana',
+            'IA': 'Iowa', 'KS': 'Kansas', 'KY': 'Kentucky', 'LA': 'Louisiana', 'ME': 'Maine',
+            'MD': 'Maryland', 'MA': 'Massachusetts', 'MI': 'Michigan', 'MN': 'Minnesota', 'MS': 'Mississippi',
+            'MO': 'Missouri', 'MT': 'Montana', 'NE': 'Nebraska', 'NV': 'Nevada', 'NH': 'New Hampshire',
+            'NJ': 'New Jersey', 'NM': 'New Mexico', 'NY': 'New York', 'NC': 'North Carolina', 'ND': 'North Dakota',
+            'OH': 'Ohio', 'OK': 'Oklahoma', 'OR': 'Oregon', 'PA': 'Pennsylvania', 'RI': 'Rhode Island',
+            'SC': 'South Carolina', 'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah',
+            'VT': 'Vermont', 'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia', 'WI': 'Wisconsin', 'WY': 'Wyoming',
+            'PR': 'Puerto Rico', 'VI': 'Virgin Islands', 'GU': 'Guam'
+        };
+
+        let charts = {};
+        const data = DASHBOARD_DATA;
+
+        // Current filters state
+        let filters = { agency: '', state: '', pay: '' };
+
+        // Initialize
+        function init() {
+            populateFilters();
+            updateDashboard();
+            setupEventListeners();
+            setupTableSorting();
+        }
+
+        function populateFilters() {
+            // Populate agency filter
+            const agencySelect = document.getElementById('filter-agency');
+            data.allAgencies.forEach(a => {
+                const opt = document.createElement('option');
+                opt.value = a.agency;
+                opt.textContent = a.agency;
+                agencySelect.appendChild(opt);
+            });
+
+            // Populate state filter
+            const stateSelect = document.getElementById('filter-state');
+            data.states.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.duty_station_state;
+                opt.textContent = s.duty_station_state;
+                stateSelect.appendChild(opt);
+            });
+
+            // Populate compare dropdowns
+            const compareOptions = data.allAgencies.map(a => `<option value="${a.agency}">${a.agency}</option>`).join('');
+            document.getElementById('compare-1').innerHTML = '<option value="">Select an agency...</option>' + compareOptions;
+            document.getElementById('compare-2').innerHTML = '<option value="">Select an agency...</option>' + compareOptions;
+
+            // Populate state compare dropdowns
+            const stateOptions = data.states.map(s => `<option value="${s.duty_station_state}">${s.duty_station_state}</option>`).join('');
+            document.getElementById('state-compare-1').innerHTML = '<option value="">Select a state...</option>' + stateOptions;
+            document.getElementById('state-compare-2').innerHTML = '<option value="">Select a state...</option>' + stateOptions;
+        }
+
+        function updateDashboard() {
+            updateActiveFilters();
+            updateStats();
+            renderOverviewCharts();
+            renderAgencyTable();
+            renderStateCharts();
+            renderStateTable();
+            renderDemographicsCharts();
+            renderEducationTable();
+            renderMaps();
+        }
+
+        function updateActiveFilters() {
+            const container = document.getElementById('active-filters');
+            const tags = [];
+
+            if (filters.agency) tags.push({ label: 'Agency', value: filters.agency, key: 'agency' });
+            if (filters.state) tags.push({ label: 'State', value: filters.state, key: 'state' });
+            if (filters.pay) tags.push({ label: 'Pay', value: filters.pay, key: 'pay' });
+
+            if (tags.length === 0) {
+                container.innerHTML = '<span class="no-filters">No filters applied - showing all data</span>';
+            } else {
+                container.innerHTML = tags.map(t => `
+                    <span class="filter-tag">
+                        ${t.label}: ${t.value.length > 25 ? t.value.slice(0,25)+'...' : t.value}
+                        <span class="filter-tag-remove" data-key="${t.key}">&times;</span>
+                    </span>
+                `).join('');
+
+                container.querySelectorAll('.filter-tag-remove').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        filters[btn.dataset.key] = '';
+                        document.getElementById('filter-' + btn.dataset.key).value = '';
+                        updateDashboard();
+                    });
+                });
+            }
+        }
+
+        function getFilteredData() {
+            let agencies = [...data.allAgencies];
+            let states = [...data.states];
+
+            if (filters.agency) {
+                agencies = agencies.filter(a => a.agency === filters.agency);
+            }
+            if (filters.state) {
+                states = states.filter(s => s.duty_station_state === filters.state);
+            }
+
+            return { agencies, states };
+        }
+
+        function updateStats() {
+            const filtered = getFilteredData();
+            const totalEmployees = filtered.agencies.reduce((sum, a) => sum + a.employees, 0);
+
+            // Filter out agencies with NaN pay values for pay calculations
+            const agenciesWithPay = filtered.agencies.filter(a => !isNaN(a.avg_pay) && a.avg_pay > 0);
+            const employeesWithPay = agenciesWithPay.reduce((sum, a) => sum + a.employees, 0);
+            const avgPay = employeesWithPay > 0 ? agenciesWithPay.reduce((sum, a) => sum + (a.avg_pay * a.employees), 0) / employeesWithPay : 0;
+
+            // Get median from agencies with valid median pay
+            const agenciesWithMedian = filtered.agencies.filter(a => !isNaN(a.median_pay) && a.median_pay > 0);
+            const medianPay = agenciesWithMedian.length > 0 ? agenciesWithMedian[Math.floor(agenciesWithMedian.length/2)].median_pay : 0;
+
+            // Calculate tenure (should have valid data for all)
+            const avgTenure = totalEmployees > 0 ? filtered.agencies.reduce((sum, a) => sum + (a.avg_tenure * a.employees), 0) / totalEmployees : 0;
+
+            document.getElementById('stat-employees').textContent = fmt.number(totalEmployees);
+            document.getElementById('stat-agencies').textContent = filtered.agencies.length;
+            document.getElementById('stat-avg-salary').textContent = avgPay > 0 ? fmt.currency(avgPay) : 'N/A';
+            document.getElementById('stat-median-salary').textContent = medianPay > 0 ? fmt.currency(medianPay) : 'N/A';
+            document.getElementById('stat-tenure').textContent = avgTenure > 0 ? fmt.decimal(avgTenure) + ' yrs' : 'N/A';
+        }
+
+        function renderOverviewCharts() {
+            const filtered = getFilteredData();
+            const topAgencies = filtered.agencies.slice(0, 15);
+
+            // Destroy existing charts
+            Object.keys(charts).forEach(key => {
+                if (charts[key]) charts[key].destroy();
+            });
+
+            charts.topAgencies = new Chart(document.getElementById('chart-top-agencies'), {
+                type: 'bar',
+                data: {
+                    labels: topAgencies.map(a => a.agency.length > 30 ? a.agency.slice(0,30)+'...' : a.agency),
+                    datasets: [{ data: topAgencies.map(a => a.employees), backgroundColor: colors.blue, borderRadius: 4 }]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    onClick: (e, elements) => {
+                        if (elements.length > 0) {
+                            const agency = topAgencies[elements[0].index].agency;
+                            filters.agency = agency;
+                            document.getElementById('filter-agency').value = agency;
+                            updateDashboard();
+                        }
+                    },
+                    scales: { x: { grid: { display: false }, ticks: { callback: v => fmt.short(v) } }, y: { grid: { display: false } } }
+                }
+            });
+
+            const payData = data.payDistribution.filter(p => p.band !== 'Redacted');
+            charts.payDist = new Chart(document.getElementById('chart-pay-dist'), {
+                type: 'bar',
+                data: {
+                    labels: payData.map(p => p.band),
+                    datasets: [{ data: payData.map(p => p.employees), backgroundColor: colors.palette, borderRadius: 4 }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { grid: { color: '#e2e8f0' }, ticks: { callback: v => fmt.short(v) } }, x: { grid: { display: false } } }
+                }
+            });
+
+            const apptData = data.appointments.slice(0, 6);
+            charts.appointment = new Chart(document.getElementById('chart-appointment'), {
+                type: 'doughnut',
+                data: {
+                    labels: apptData.map(a => a.appointment_type.length > 20 ? a.appointment_type.slice(0,20)+'...' : a.appointment_type),
+                    datasets: [{ data: apptData.map(a => a.employees), backgroundColor: colors.palette }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '60%',
+                    plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 10, padding: 6, font: { size: 10 } } } }
+                }
+            });
+
+            charts.stem = new Chart(document.getElementById('chart-stem'), {
+                type: 'doughnut',
+                data: {
+                    labels: data.stem.map(s => s.stem_occupation === 'STEM OCCUPATIONS' ? 'STEM' : 'Non-STEM'),
+                    datasets: [{ data: data.stem.map(s => s.employees), backgroundColor: [colors.teal, colors.gray] }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '60%',
+                    plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 10, padding: 6 } } }
+                }
+            });
+
+            const superData = data.supervisory.slice(0, 5);
+            charts.supervisory = new Chart(document.getElementById('chart-supervisory'), {
+                type: 'doughnut',
+                data: {
+                    labels: superData.map(s => s.supervisory_status.length > 20 ? s.supervisory_status.slice(0,20)+'...' : s.supervisory_status),
+                    datasets: [{ data: superData.map(s => s.employees), backgroundColor: colors.palette }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '60%',
+                    plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 10, padding: 6, font: { size: 10 } } } }
+                }
+            });
+        }
+
+        function renderAgencyTable(searchTerm = '') {
+            const tbody = document.getElementById('agency-table-body');
+            let agencies = getFilteredData().agencies;
+            if (searchTerm) {
+                agencies = agencies.filter(a => a.agency.toLowerCase().includes(searchTerm.toLowerCase()));
+            }
+            tbody.innerHTML = agencies.map(a => `
+                <tr data-agency="${a.agency}" style="cursor:pointer;">
+                    <td>${a.agency}</td>
+                    <td class="number">${fmt.number(a.employees)}</td>
+                    <td class="number">${fmt.currency(a.avg_pay)}</td>
+                    <td class="number">${fmt.currency(a.median_pay)}</td>
+                    <td class="number">${fmt.decimal(a.avg_tenure)}</td>
+                    <td class="number">${fmt.decimal(a.avg_grade)}</td>
+                </tr>
+            `).join('');
+
+            tbody.querySelectorAll('tr').forEach(row => {
+                row.addEventListener('click', () => {
+                    filters.agency = row.dataset.agency;
+                    document.getElementById('filter-agency').value = row.dataset.agency;
+                    updateDashboard();
+                });
+            });
+        }
+
+        function renderStateCharts() {
+            const filtered = getFilteredData();
+            const topStates = filtered.states.slice(0, 20);
+
+            if (charts.states) charts.states.destroy();
+            charts.states = new Chart(document.getElementById('chart-states'), {
+                type: 'bar',
+                data: {
+                    labels: topStates.map(s => s.duty_station_state_abbreviation || s.duty_station_state.slice(0,12)),
+                    datasets: [{ data: topStates.map(s => s.employees), backgroundColor: colors.blue, borderRadius: 4 }]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    onClick: (e, elements) => {
+                        if (elements.length > 0) {
+                            const state = topStates[elements[0].index].duty_station_state;
+                            filters.state = state;
+                            document.getElementById('filter-state').value = state;
+                            updateDashboard();
+                        }
+                    },
+                    scales: { x: { grid: { display: false }, ticks: { callback: v => fmt.short(v) } }, y: { grid: { display: false } } }
+                }
+            });
+
+            const byPay = [...filtered.states].sort((a, b) => b.avg_pay - a.avg_pay).slice(0, 20);
+            if (charts.stateSalary) charts.stateSalary.destroy();
+            charts.stateSalary = new Chart(document.getElementById('chart-state-salary'), {
+                type: 'bar',
+                data: {
+                    labels: byPay.map(s => s.duty_station_state_abbreviation || s.duty_station_state.slice(0,12)),
+                    datasets: [{ data: byPay.map(s => s.avg_pay), backgroundColor: colors.teal, borderRadius: 4 }]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    scales: { x: { grid: { display: false }, ticks: { callback: v => fmt.currency(v) } }, y: { grid: { display: false } } }
+                }
+            });
+        }
+
+        function renderStateTable(searchTerm = '') {
+            const tbody = document.getElementById('state-table-body');
+            let states = getFilteredData().states;
+            if (searchTerm) {
+                states = states.filter(s => s.duty_station_state.toLowerCase().includes(searchTerm.toLowerCase()));
+            }
+            tbody.innerHTML = states.map(s => `
+                <tr data-state="${s.duty_station_state}" style="cursor:pointer;">
+                    <td>${s.duty_station_state}</td>
+                    <td class="number">${fmt.number(s.employees)}</td>
+                    <td class="number">${fmt.currency(s.avg_pay)}</td>
+                    <td class="number">${fmt.currency(s.median_pay)}</td>
+                    <td class="number">${fmt.decimal(s.avg_tenure)}</td>
+                </tr>
+            `).join('');
+
+            tbody.querySelectorAll('tr').forEach(row => {
+                row.addEventListener('click', () => {
+                    filters.state = row.dataset.state;
+                    document.getElementById('filter-state').value = row.dataset.state;
+                    updateDashboard();
+                });
+            });
+        }
+
+        function renderDemographicsCharts() {
+            if (charts.age) charts.age.destroy();
+            charts.age = new Chart(document.getElementById('chart-age'), {
+                type: 'bar',
+                data: {
+                    labels: data.ageBrackets.map(a => a.age_bracket),
+                    datasets: [{ data: data.ageBrackets.map(a => a.employees), backgroundColor: colors.purple, borderRadius: 4 }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { grid: { color: '#e2e8f0' }, ticks: { callback: v => fmt.short(v) } }, x: { grid: { display: false } } }
+                }
+            });
+
+            const eduTop = data.education.slice(0, 8);
+            if (charts.education) charts.education.destroy();
+            charts.education = new Chart(document.getElementById('chart-education'), {
+                type: 'bar',
+                data: {
+                    labels: eduTop.map(e => e.education_level.length > 18 ? e.education_level.slice(0,18)+'...' : e.education_level),
+                    datasets: [{ data: eduTop.map(e => e.employees), backgroundColor: colors.amber, borderRadius: 4 }]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    scales: { x: { grid: { display: false }, ticks: { callback: v => fmt.short(v) } }, y: { grid: { display: false } } }
+                }
+            });
+        }
+
+        function renderEducationTable() {
+            const tbody = document.getElementById('education-table-body');
+            tbody.innerHTML = data.education.map(e => `
+                <tr>
+                    <td>${e.education_level}</td>
+                    <td class="number">${fmt.number(e.employees)}</td>
+                    <td class="number">${fmt.currency(e.avg_pay)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderMaps() {
+            renderMap('geo-map-1', 'employees');
+            renderMap('geo-map-2', 'avg_pay');
+        }
+
+        function renderMap(containerId, metric) {
+            const container = document.getElementById(containerId);
+            const stateData = {};
+            data.states.forEach(s => {
+                const abbr = s.duty_station_state_abbreviation;
+                if (abbr) stateData[abbr] = s;
+            });
+
+            const values = data.states.map(s => s[metric]).filter(v => v && !isNaN(v));
+            const minVal = Math.min(...values);
+            const maxVal = Math.max(...values);
+
+            // Better color scale: light blue to dark blue with more contrast
+            const getColor = (val) => {
+                if (!val || isNaN(val)) return '#e2e8f0';
+                const pct = (val - minVal) / (maxVal - minVal);
+                // Use a color scale from light (#dbeafe) to dark (#1e40af)
+                const r = Math.round(219 - (219 - 30) * pct);
+                const g = Math.round(234 - (234 - 64) * pct);
+                const b = Math.round(254 - (254 - 175) * pct);
+                return `rgb(${r},${g},${b})`;
+            };
+
+            // Simple US Map SVG (abbreviated for key states)
+            const mapSvg = `
+                <svg class="us-map" viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg">
+                    <path data-state="CA" fill="${getColor(stateData['CA']?.[metric])}" d="M122.7,385.9l-2.2-13.1l-0.6-10.7l-6.1-12.5l-4.6-6.2l-3.2-7.2l-2-1l-1.2-2.3l1.5-2.5l-2.4-4l-2.5-7.5l-2.3-2.5l-2.5-0.5l0.2-2.8l-1.5-3.5l1.7-4.4l1-0.5l0.4-4.7l-1.7-2.2l-0.5-5.2l-3.5-5.5l-0.5-2.7l-2.5-3l-0.3-2.2l-1.7-1.2l2.5-9.5l5-15.5l12.5-36.5l9.6-28.9l-1-1.8l-1.1-0.1l-0.4-1.3l-2.7,0.7l-0.9-0.5l0.2-0.9l-5.8,1.7l-0.7-0.5l-0.2-1.6l-1.2-0.1l-2.3-3l-1.6-6.5l12-3l20.5-5.5l8-2.2l-0.6,3.1l3.5,6.8l1.2,4.2l0.2,3.2l2.4,4.7l0.2,2l-0.7,4.7l2.2,4.2l1.5,4l2.7,2.7l0,1.8l-1.2,2.5l0.5,2.5l3.2,3.7l4.8,20l2.7,9.4l-0.2,2.6l1,4.2l-0.5,4.7l0.5,1.5l-0.5,5l-1.7,4l-0.5,3.6l0.5,2l-0.2,11.9l1,2.2l-0.3,3.2l-2.5,3.7l-2.2,1.5l-1.8,6.7l-0.5,7l-1.7,3.7l-2.5,4l-1.2,0.5l-0.3,2l-5,5.2l-3,1.5l-1.9,2.7l-2.2,5.5l-2.5,0.5l-3,1l-0.7,0.7l-2.5-1l-2.2-0.2l-2.7,1.2l-2.2,2.5l-3.3,1.2l-2,2.7l-0.5,2l-2.7-0.3Z"/>
+                    <path data-state="TX" fill="${getColor(stateData['TX']?.[metric])}" d="M380.4,412.8l-2.5-0.1l-24.8-1.3l-24.8-1.7l-0.6-10.9l-0.9-14.7l-0.5-4.2l5.9,0.4l27.1,1.6l27,0.7l26.2,0.1l0.2,8.9l0.6,8.4l0,4.4l1.9,5.4l0.5,3.7l2.5,2.2l0.5,2l1.7,2.9l2.7,0.7l1.7,1.2l0.8,3.7l2.9,2.2l3.2,1.5l2.7,1l1.5,1.8l0.8,0l0.9,1.7l-1.2,5l0.5,1.9l-0.2,2.7l0.7,1.5l1.2,8.2l0.5,2.9l1.2,1.2l-0.3,2l-3.2,2.2l-3,4l-0.5,1l-2.7,1.2l-3.5,3.5l-1.5,0.2l-2,1.2l-3.2,0.5l-2.5,1.5l-0.7,2.2l-3.2,2.7l-0.2,1.5l1.2,1l-0.2,1.5l-2.5,1.5l-2.9,0l-4,1.2l-0.7,1.5l0.5,1.7l-1.2,1.2l-0.2,5l-1.5,2.5l1.2,1l0.7,2.2l1.2,0.2l1.5,1.5l-0.7,4.5l-2.7,4.2l-0.5,2.7l0.5,2.2l-1.5,3.2l-3,4l-2.2,1.5l-0.5,3l-3.7,5.2l-0.7,3l-2,2l-1.5,0.2l0.5-2.2l-1.7-2l-3.2-1l-2.7,0.7l-3.2,2.5l-1.5-0.5l-1-1.7l-2.7-0.5l-1.5,0.2l-2-2l-4.2-0.2l-5.2-3l-5.7-0.7l-0.5-1l-3-0.5l-2.5,0.2l-0.2-1.5l-2-1l-2-2.5l0.2-1.2l-1.7-4l-3.2-2l-5.5-0.7l-2.5-1l-4.5-3l-0.7-2.7l-2.2-1.5l-0.2-1.2l-3.5-3.7l-0.7-5l-2-1.5l0.2-2.5l-1.7-0.2l-2-1.7l-0.7-2.2l-2.5-2.2l-0.5-2.5l-3.2-0.7l-3.2-3l0.3-5.7l-1-1l-2.7,1.2l-1.5-0.5l-0.5,1l-2-0.5l-3.2-2.5l-0.2-3l-0.7-0.7l0.7-7l-1.2-1.7l-0.2-1.5l-1.5-0.7l0.2-2.5l-2.2-3.7l0.2-1.2l-3.5-5.2l-0.3-3l-2.4-2l0.2-1l-3.7-1l-4.2-0.7l-2.9-1.7l0.4-6.7l3.4-21.5Z"/>
+                    <path data-state="FL" fill="${getColor(stateData['FL']?.[metric])}" d="M759.8,417.4l1,0.1l7.6,2.5l6.4,3.5l4.1,3.6l3.2,6.1l2.7,4.2l0.6,3.9l0.6,0.9l-0.6,1.5l0.7,2.7l2.5,3l1.6,6.2l2.5,5.6l3.9,6.5l3.4,7l1,4.7l0.2,7l-1.2,2.5l-2.5,1l-0.5,1.5l0.2,3.2l-1.5,0.5l-1.4-0.7l0.2-1.7l-4.3-4.4l-2.6-1.2l-3.7,0l-2-1.7l-3.2-3.2l-2.5-1l-1.5,0.2l-3.9-2.5l-5.8-2.7l-2.1-0.6l-1.7-4.9l-4.7-2.5l-1.2-1.7l-3.4-1.5l-2.2-2.5l-3.2-1.4l-3.6-3.7l0.5-2.1l2.2-1l-0.2-2.9l-5-1l-2.7-2.2l-3.5-1.2l-1.9-2.2l-3.2-1l-4.2-1.2l-1.7-1.7l-3.5-0.5l-3.5-2.2l-4-1l-0.7,0.7l-3.2-2l-3.4-0.7l-3.2-2l-1.7-2l-3.1-1.5l-0.5-1.7l5.1-0.7l10.1-1.2l6.2,0.4l5.4,0.1l9.1,0.8l6.2,0l2.4-0.1Z"/>
+                    <path data-state="NY" fill="${getColor(stateData['NY']?.[metric])}" d="M817.2,177.4l2.4-1.7l1.9-2.2l1.4-0.4l1.4-2.9l1.7-0.5l6.4-5.9l4.2-5.2l2.4-4l1.5-3.7l0.5-3.5l-0.1-2.7l0.2-0.7l0,0l0.8,0.9l1.5-0.4l2,2l2.2,0.2l0.5,1.2l-2.5,2l-4.3,3.1l-3.7,2.2l-7.3,3.9l-5.7,3.7l0,1l3.2,1.2l0.7-0.5l3.7-2l2.3-1l10.4-3.2l3.4,0l4.5-1.2l6.2-3l4.2-1l9.9-0.2l3.2-0.7l5.7-3l3.8-0.7l0.7-1.2l3.4-1.5l2.5-1.7l0,0l-1.2,3l-0.5,2.5l0.5,2l-2,2.2l-2.3,1.2l-4.2,3l-0.9,3.5l0.5,1.2l-0.5,2l-1.5,2l-0.2,1.2l-1.7,1.2l0,2.7l-1.7,2.5l-1.2,0.2l-0.8-0.5l-3.7,2l-4,1l-5.8,0.3l-3.7,1.2l-3.4-0.2l-5.1,1.5l-3.4,0.5l-3.5,0l-1.3-2.2l0.5-1.6l1.2-0.3l0.5-2.1l-1.9-2l-2.4-0.7l-6.1,0l-5.7,0.7l-3.1,1l-1.2-0.2l-3.7-2.2l-5.4,0.7l-2.4,0.2Z"/>
+                    <path data-state="PA" fill="${getColor(stateData['PA']?.[metric])}" d="M794.1,205.9l0.4-0.6l1.6,0l0.6,1l3,0.2l1.2-1.9l0.3-1.3l-0.6-1.2l-0.2-4.1l1.5-1.3l0.2-0.9l-0.8-0.8l0.3-2l1-1.5l0.9,0.2l0.2-0.4l-0.4-2.5l0.8-3.1l1.9-2.7l0.2-1.9l-1-1.5l0.6-1.7l2.4-0.2l5.4-0.7l3.7,2.2l1.2,0.2l3.1-1l5.7-0.7l6.1,0l2.4,0.7l1.9,2l-0.5,2.1l-1.2,0.3l-0.5,1.6l1.3,2.2l3.5,0l3.4-0.5l5.1-1.5l3.4,0.2l3.7-1.2l5.8-0.3l4-1l3.7-2l0.8,0.5l0.1,1.4l0.6,3.2l0.3,4.7l-0.6,0.6l0.3,2.3l0.9,0.6l0.9,3.7l-1.1,0.5l-0.3,2.9l1.2,1.1l0,0l-1,0.4l-0.7,1l0.4,0.9l-2.9,1.2l-2.5,0.2l-0.8-0.6l-1.9,0l-1.5,1.3l-2.8-0.3l-0.4,0.9l0.2,1.2l0,0l-4.9,1l-31.1,6.9l-21.6,4.5l0,0l0.6-2.7l0.5-4.5l-1.4-1.9l1.3-2Z"/>
+                    <path data-state="IL" fill="${getColor(stateData['IL']?.[metric])}" d="M586.7,249.2l0.4-2.2l2.4-2.7l0.5-2.5l-0.7-3.5l-1.7-2.2l-0.8-2.5l0.7-5.5l1.7-3.2l1.7-1.7l-0.2-1.2l-1.7-1.5l-0.7-4l0.2-3l1.4-3.4l3-2.8l0.5-4.5l-0.6-2.7l0.4-1.9l0,0l2.5,1.2l5.7,1.7l5.4-0.2l1,1.5l0,2.2l1.6,2.6l10.7,0.9l3.4-0.4l2.8,1.4l3.9-1.9l2.9,0l0.7,0.6l0,0l-0.1,1.9l-2.2,1.7l-0.3,2.4l0.4,1.1l-1.2,2.3l-0.5,3.5l0.8,3.5l3,4.1l5,3.9l0,2.9l1.3,4.5l-0.4,2.9l-2.4,1.6l-1.1,2.9l-0.5,3l1.6,1.9l0.9,2.5l4.9,4.1l0.6,2l0.3,5l-0.6,2.3l0.7,1l-0.6,1.1l0.2,2l-3.6,2.6l-1.5,2.9l0.2,1.1l-0.9,4.3l-2.5,2.4l-0.3,1.9l-0.1,4.9l-1.7,2l-2.5,4.7l-0.9,4.6l0.9,1.8l-0.3,0.7l-2.3,1l-1.6,1.7l-0.4,3.8l-1.9,0.7l-0.7,1.6l0,0l-4.3-1.7l-1.4-1.7l-0.9,0.3l-3.9-1.2l-1.9-1.5l-2-5l-1.5-0.8l-3-0.1l0.2-0.9l-2.6-3.7l-0.4-1.7l-1.5-1.7l0.2-1.9l-1.5-0.3l-0.6-1l0.9-2.1l-0.9-1.1l-0.3-2l0.4-3.3l-0.8-3.9l-2.2-3.1l-0.3-4.7l-1.9-0.9l0.2-0.9l-2.6-2.6l0.2-2l-1.5-1.5l0.3-2.1l-3-3.3l-1.9-4.3l-1-0.8l1.7-4.1l-0.7-2.2l1.2-2.5l-0.7-2.4l1.6-0.9Z"/>
+                    <path data-state="OH" fill="${getColor(stateData['OH']?.[metric])}" d="M690.3,218.9l1.6,0.9l0.7-1.1l1.7,0.1l3.9-1.4l1.7,0.6l5.7-2l4.6-1.5l4.9-1.2l4.9-0.7l0,0l0.9,1.1l-1.7,1.2l-0.7,2l-2.3,2.5l-1.4,3.5l-1.6,2.6l-2.7,3l-1.6,3.2l-1.9,2.4l0,1.5l1,1.1l0.2,4.3l3.6,3.5l-0.8,3.3l0.3,1.4l1.4,0.2l0.7,3.8l4.4,0.3l2.2,1.3l1.9,2.9l2.9,0.5l1.6,1.7l2.9,1.7l2.5,0.9l1.8,2.5l2.7,0.9l3.2,2.7l3.2,0.4l0,0l-0.3,1.9l-1.6,3.5l-1.6,1.9l-2,3.6l0.1,1.9l-0.7,2.4l-0.1,3.9l-1.2,0.5l0,0l-3.5,0.5l-5.5,2.1l-3.6-0.2l-4.9,0.9l-3.9,2.4l-6.1,1l-5,1.3l0,0l-2.2-2.1l-10.9-0.2l-9.9-0.6l-9.7-0.7l-5.7,0l0,0l-0.4-6.5l0.6-1l-0.9-2.9l1.3-2l0.1-1.4l0.7-2.3l-0.4-2.3l1.9-3.2l-0.3-1.7l0.5-2.6l1.2-1.9l-0.7-0.8l0.9-1.6l-0.2-2.9l1.9-3.9l2.9-0.9l0.9-1.8l2.3-2.3l-0.5-3.2l2.7-1.9l0.2-1.6l1.3-1.6l-0.2-1.8l2.6-0.9l2.7-2.5l2-0.9l1.7-2.5l0.8-0.3l0.9-2.9l1.5-0.3Z"/>
+                    <path data-state="GA" fill="${getColor(stateData['GA']?.[metric])}" d="M700.7,357.4l0.9,0.3l1.9,3.3l1.9,1.9l1.9,4.1l1.5,2.7l1.9,5.2l1.1,4.1l0.3,3.2l-0.2,3.7l1.1,5.4l1.7,3.9l2.4,3.2l1.3,0.2l0.5,1.3l2.3,2.4l-0.2,2.2l0.5,1l-0.9,4.7l1.1,1.9l-1.7,3.7l-0.1,2.3l0,0l-5.4-0.1l-6.2-0.4l-10.1,1.2l-5.1,0.7l0,0l-0.7-1.3l-5.9-0.2l-9.4,0.9l-8.9,1.2l0,0l-0.6-4.3l-2.6-6l-0.6-2.7l-1.9-1.4l-0.8-2.5l0.8-4.2l-1.3-2.7l-0.3-2.9l-0.9-1.1l1.9-0.5l-0.2-1.5l-1-1.6l0.6-1.1l-0.7-1.9l0.8-3.9l-1.2-2l0.5-1.5l-1.6-2.3l-0.6-2l0,0l6.6-0.8l4.6-1.2l2.7-1.7l1.6-3.7l3.1-2.7l0.7-1.2l0,0l5.6,0.3l8.7-1.1l5-0.2Z"/>
+                    <path data-state="NC" fill="${getColor(stateData['NC']?.[metric])}" d="M826.9,304.1l0.3,3.9l1.9,1.3l-0.2,3l-2.1,0.2l0.3,1.9l2.1,0.4l2.2,2.9l0.2,1.7l0.9,0.9l-0.3,1l2.4,1.5l1.5-0.5l1.2,1l-1.9,2.7l0.4,2.7l0.8,0.4l-1.2,4l-2.5,4.4l-3.9,4.9l-2.5,0.5l-1.6,1.7l-2.4,0.5l-1.1,2l-2.5,1.4l-0.9-0.7l-1.8,2l-3.9,1.9l-4.8,4.2l-0.9,2.7l0.2,0.9l-0.8,0.5l-2,2.9l0,0l-3.1-0.5l-1.6,1.2l-3.5-0.2l-4.6,1.3l-4.8,2.5l-5.7-0.6l-5.2,2l-5,0.7l-5.7,2.3l0,0l0.1-2.3l1.7-3.7l-1.1-1.9l0.9-4.7l-0.5-1l0.2-2.2l-2.3-2.4l-0.5-1.3l-1.3-0.2l-2.4-3.2l-1.7-3.9l-1.1-5.4l0.2-3.7l-0.3-3.2l-1.1-4.1l-1.9-5.2l-1.5-2.7l-1.9-4.1l-1.9-1.9l-1.9-3.3l-0.9-0.3l0,0l0.6-1.6l-1.5-1.6l-0.2-2.4l1.7,0.1l0.5-1.6l2.2,0.9l4.3-2l0,0l5.3-0.7l7.7,0.4l2.9-0.7l7.1-0.1l2.7,0.6l3.6-1.2l6.7,0l8.7-2.3l4.1-0.2l4.9-1.3l2.7-2.2l3.2-1.2l3.3-2.3l0.6,0.5l1.8,3.7l3.2,0.9l2.9-2.2l1.7-2.5l2.1-0.9l0.2-1.2l1.9-0.7l2.6,0l0.6-0.9l0,0l1.9,0.4Z"/>
+                    <path data-state="VA" fill="${getColor(stateData['VA']?.[metric])}" d="M798.7,271.7l0.9,0.1l0.7,1.9l1.5,1.1l0.5,1.2l2.2,0.2l1.1-0.9l2.7,1.6l0.9,1.8l4.2,1.5l0,0l-0.2,1.9l2.2,0.7l0.5,1l2.1,1.3l-0.2,2.1l1.6,1.1l1.2-0.8l1.2,0.7l0.3,2.2l1.2,0.7l1.3-0.9l3.5,1.6l1.1-0.3l0.5,0.8l1.6-1.7l1.1,1l0.7-0.8l1.6,0.7l0.6-1.1l1.9,0.7l2.5,2.7l3.3,0.5l0,0l-1.9,0.4l-0.2,1.2l-1.7,2.5l-2.9,2.2l-3.2-0.9l-1.8-3.7l-0.6-0.5l-3.3,2.3l-3.2,1.2l-2.7,2.2l-4.9,1.3l-4.1,0.2l-8.7,2.3l-6.7,0l-3.6,1.2l-2.7-0.6l-7.1,0.1l-2.9,0.7l-7.7-0.4l-5.3,0.7l0,0l-4.3,2l-2.2-0.9l-0.5,1.6l-1.7-0.1l0.2,2.4l1.5,1.6l-0.6,1.6l0,0l-5,0.2l-8.7,1.1l-5.6-0.3l0,0l-0.2-2l0.6-3.4l0.6-1.1l0.5-3.9l1.7-3.9l0.7-0.5l0.7-2.5l-0.5-1.9l2.2-3.5l-0.6-0.7l0.4-3.2l2.1-4.6l0.8-0.2l-0.2-2l0.9-3.9l0,0l2.5-1.6l0.9,1.1l2.5-0.9l0.5-0.7l1.2,0.3l1,2.9l1.8,0.7l1.7-0.2l0.3-1.1l1.3-0.2l0.3-0.9l0.8,0.4l2.8-1.3l2.2,0.8l2.7-0.5l1.9-3.5l2-1.3l-0.3-0.9l2.9-0.9l0.5-1.3l1.8-0.8l0.8-2.5l1.6-1l1.7,0.1l1.9-1.3l0.7,0.8l0.8-1l2.9,0l0.9,1.2l2.9-1.5l0.3,1.1l3.9-1.4l0.6,1.7l1.9-0.9l0.1-1l1.9-0.3l0.7-1.9l-0.5-1l0.9-0.9l0.7,0.9l1.1-1.7l-1-2l2.2-2.3Z"/>
+                    <path data-state="MD" fill="${getColor(stateData['MD']?.[metric])}" d="M799.8,251.5l-0.2,1.6l-1.5,1.6l0.4,4.1l1.4,0.2l-0.6,1.6l1.9,1.6l1.5,1.6l0.9,2.5l2.6,1.5l1.9,0.5l0,0l-2.2,2.3l1,2l-1.1,1.7l-0.7-0.9l-0.9,0.9l0.5,1l-0.7,1.9l-1.9,0.3l-0.1,1l-1.9,0.9l-0.6-1.7l-3.9,1.4l-0.3-1.1l-2.9,1.5l-0.9-1.2l-2.9,0l-0.8,1l-0.7-0.8l-1.9,1.3l-1.7-0.1l-1.6,1l-0.8,2.5l-1.8,0.8l-0.5,1.3l-2.9,0.9l0.3,0.9l-2,1.3l-1.9,3.5l-2.7,0.5l-2.2-0.8l-2.8,1.3l-0.8-0.4l-0.3,0.9l-1.3,0.2l-0.3,1.1l-1.7,0.2l-1.8-0.7l-1-2.9l-1.2-0.3l-0.5,0.7l-2.5,0.9l-0.9-1.1l-2.5,1.6l0,0l-1.6,0.6l-0.5-1.7l-1-0.2l0.2-2.1l-1.4-2.5l2.1-0.5l0.3-3.2l1.2-0.4l-1.7-0.1l-0.7-2.4l2.9-0.4l-0.9-0.9l-0.8-2.2l1.7-1.6l-2.7-0.3l-1-3l1.9-1.5l2.1-0.2l0.5,0.7l0.7-1l-0.2-0.9l2.7-0.2l0.9-1.3l-0.1-1.3l1.8-0.9l0.8,0.3l1.5-0.7l-0.3-1.9l1.5-1.9l1.6-0.4l0,0l0.9,0.5l1.7-1l5.6-0.9l0.9-1l1.5,0.2l1.9,2.2l2.6-2.6l0.7,1.7l3-0.3l0.9-1.3l-0.7-1.4l0.9-0.3l0,0l0,0l0.2,0.9l1-0.5l1.6,1.1l0.7-0.9l1.4,0.3l0.7,2.4l2.7-0.2l0.7,0.8l1.7-0.3l0.2-0.9l1.4,0.2l-0.2-2.1l-0.8-0.3l-0.9-2.9l0.6-1.9l-0.5-1.4l0.5-1.6l-0.2-1l3.5-0.5l0,0l0.7,2.5Z"/>
+                    <path data-state="DC" fill="${getColor(stateData['DC']?.[metric])}" d="M788.5,256.1l1.2,2.1l-1.2,0.4l-1-0.9l-0.8,0.4l0.2-1l-0.3-0.9l0.7-0.7Z"/>
+                </svg>
+                <div class="map-legend">
+                    <div class="legend-title">${metric === 'employees' ? 'Employee Count' : 'Average Salary'}</div>
+                    <div class="legend-scale" style="background: linear-gradient(to right, #3b82f6, #14b8a6);"></div>
+                    <div class="legend-labels">
+                        <span>${metric === 'employees' ? fmt.short(minVal) : fmt.currency(minVal)}</span>
+                        <span>${metric === 'employees' ? fmt.short(maxVal) : fmt.currency(maxVal)}</span>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = mapSvg;
+
+            // Add hover interactions
+            const tooltip = document.getElementById('map-tooltip');
+            container.querySelectorAll('path[data-state]').forEach(path => {
+                path.addEventListener('mouseenter', (e) => {
+                    const abbr = path.dataset.state;
+                    const state = stateData[abbr];
+                    if (state) {
+                        tooltip.querySelector('.tooltip-title').textContent = state.duty_station_state;
+                        tooltip.querySelector('.tooltip-value').textContent =
+                            metric === 'employees' ? fmt.number(state.employees) + ' employees' : fmt.currency(state.avg_pay) + ' avg salary';
+                        tooltip.classList.add('visible');
+                    }
+                });
+                path.addEventListener('mousemove', (e) => {
+                    tooltip.style.left = e.pageX + 10 + 'px';
+                    tooltip.style.top = e.pageY - 30 + 'px';
+                });
+                path.addEventListener('mouseleave', () => {
+                    tooltip.classList.remove('visible');
+                });
+                path.addEventListener('click', () => {
+                    const abbr = path.dataset.state;
+                    const state = stateData[abbr];
+                    if (state) {
+                        filters.state = state.duty_station_state;
+                        document.getElementById('filter-state').value = state.duty_station_state;
+                        updateDashboard();
+                    }
+                });
+            });
+        }
+
+        function updateAgencyComparison() {
+            const a1 = document.getElementById('compare-1').value;
+            const a2 = document.getElementById('compare-2').value;
+            const d1 = data.allAgencies.find(a => a.agency === a1);
+            const d2 = data.allAgencies.find(a => a.agency === a2);
+
+            function renderStats(d, containerId, titleId) {
+                if (d) {
+                    document.getElementById(titleId).textContent = d.agency;
+                    document.getElementById(containerId).innerHTML = `
+                        <div class="compare-stat"><span class="compare-stat-label">Employees</span><span class="compare-stat-value">${fmt.number(d.employees)}</span></div>
+                        <div class="compare-stat"><span class="compare-stat-label">Average Salary</span><span class="compare-stat-value">${fmt.currency(d.avg_pay)}</span></div>
+                        <div class="compare-stat"><span class="compare-stat-label">Median Salary</span><span class="compare-stat-value">${fmt.currency(d.median_pay)}</span></div>
+                        <div class="compare-stat"><span class="compare-stat-label">Average Tenure</span><span class="compare-stat-value">${fmt.decimal(d.avg_tenure)} years</span></div>
+                        <div class="compare-stat"><span class="compare-stat-label">Average Grade</span><span class="compare-stat-value">${fmt.decimal(d.avg_grade)}</span></div>
+                    `;
+                }
+            }
+
+            renderStats(d1, 'compare-body-1', 'compare-title-1');
+            renderStats(d2, 'compare-body-2', 'compare-title-2');
+
+            if (d1 && d2) {
+                if (charts.compare) charts.compare.destroy();
+                charts.compare = new Chart(document.getElementById('chart-compare'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Employees (K)', 'Avg Salary ($K)', 'Median ($K)', 'Tenure (Yrs)'],
+                        datasets: [
+                            { label: d1.agency.slice(0,25), data: [d1.employees/1000, d1.avg_pay/1000, d1.median_pay/1000, d1.avg_tenure], backgroundColor: colors.blue },
+                            { label: d2.agency.slice(0,25), data: [d2.employees/1000, d2.avg_pay/1000, d2.median_pay/1000, d2.avg_tenure], backgroundColor: colors.teal }
+                        ]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { display: true, position: 'top' } },
+                        scales: { y: { grid: { color: '#e2e8f0' } }, x: { grid: { display: false } } }
+                    }
+                });
+            }
+        }
+
+        function updateStateComparison() {
+            const s1 = document.getElementById('state-compare-1').value;
+            const s2 = document.getElementById('state-compare-2').value;
+            const d1 = data.states.find(s => s.duty_station_state === s1);
+            const d2 = data.states.find(s => s.duty_station_state === s2);
+
+            function renderStats(d, containerId) {
+                if (d) {
+                    document.getElementById(containerId).innerHTML = `
+                        <h4 style="font-weight:600; margin-bottom:0.75rem; color: var(--navy-800);">${d.duty_station_state}</h4>
+                        <div class="compare-stat"><span class="compare-stat-label">Employees</span><span class="compare-stat-value">${fmt.number(d.employees)}</span></div>
+                        <div class="compare-stat"><span class="compare-stat-label">Avg Salary</span><span class="compare-stat-value">${fmt.currency(d.avg_pay)}</span></div>
+                        <div class="compare-stat"><span class="compare-stat-label">Median Salary</span><span class="compare-stat-value">${fmt.currency(d.median_pay)}</span></div>
+                        <div class="compare-stat"><span class="compare-stat-label">Avg Tenure</span><span class="compare-stat-value">${fmt.decimal(d.avg_tenure)} years</span></div>
+                    `;
+                } else {
+                    document.getElementById(containerId).innerHTML = '<p style="color: var(--gray-400);">Select a state above</p>';
+                }
+            }
+
+            renderStats(d1, 'state-compare-body-1');
+            renderStats(d2, 'state-compare-body-2');
+        }
+
+        function setupTableSorting() {
+            document.querySelectorAll('.data-table th.sortable').forEach(th => {
+                th.addEventListener('click', () => {
+                    const table = th.closest('table');
+                    const tbody = table.querySelector('tbody');
+                    const rows = Array.from(tbody.querySelectorAll('tr'));
+                    const colIdx = Array.from(th.parentNode.children).indexOf(th);
+                    const isNumeric = th.classList.contains('number');
+                    const isAsc = th.classList.contains('sorted-asc');
+
+                    table.querySelectorAll('th').forEach(h => h.classList.remove('sorted', 'sorted-asc', 'sorted-desc'));
+                    th.classList.add('sorted', isAsc ? 'sorted-desc' : 'sorted-asc');
+
+                    rows.sort((a, b) => {
+                        let aVal = a.children[colIdx].textContent.replace(/[$,]/g, '');
+                        let bVal = b.children[colIdx].textContent.replace(/[$,]/g, '');
+                        if (isNumeric) {
+                            aVal = parseFloat(aVal) || 0;
+                            bVal = parseFloat(bVal) || 0;
+                        }
+                        if (isAsc) return aVal < bVal ? 1 : -1;
+                        return aVal > bVal ? 1 : -1;
+                    });
+
+                    rows.forEach(row => tbody.appendChild(row));
+                });
+            });
+        }
+
+        function setupEventListeners() {
+            // Tab switching
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+                });
+            });
+
+            // Global filters
+            ['filter-agency', 'filter-state', 'filter-pay'].forEach(id => {
+                document.getElementById(id).addEventListener('change', (e) => {
+                    const key = id.replace('filter-', '');
+                    filters[key] = e.target.value;
+                    updateDashboard();
+                });
+            });
+
+            // Reset filters
+            document.getElementById('filter-reset').addEventListener('click', () => {
+                filters = { agency: '', state: '', pay: '' };
+                document.getElementById('filter-agency').value = '';
+                document.getElementById('filter-state').value = '';
+                document.getElementById('filter-pay').value = '';
+                updateDashboard();
+            });
+
+            // Search
+            document.getElementById('agency-search').addEventListener('input', (e) => renderAgencyTable(e.target.value));
+            document.getElementById('state-search').addEventListener('input', (e) => renderStateTable(e.target.value));
+
+            // Comparisons
+            document.getElementById('compare-1').addEventListener('change', updateAgencyComparison);
+            document.getElementById('compare-2').addEventListener('change', updateAgencyComparison);
+            document.getElementById('state-compare-1').addEventListener('change', updateStateComparison);
+            document.getElementById('state-compare-2').addEventListener('change', updateStateComparison);
+
+            // View toggles (chart/map)
+            document.querySelectorAll('.view-toggle').forEach(toggle => {
+                toggle.querySelectorAll('.view-toggle-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        toggle.querySelectorAll('.view-toggle-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+
+                        const parent = toggle.closest('.card').querySelector('.card-body');
+                        const chartContainer = parent.querySelector('[id^="geo-chart"]');
+                        const mapContainer = parent.querySelector('[id^="geo-map"]');
+
+                        if (btn.dataset.view === 'map') {
+                            chartContainer.classList.add('hidden');
+                            mapContainer.classList.remove('hidden');
+                        } else {
+                            chartContainer.classList.remove('hidden');
+                            mapContainer.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>
