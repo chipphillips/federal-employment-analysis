@@ -97,14 +97,49 @@ filter_and_analyze(df_clean, agency='DEPARTMENT OF TREASURY', education_level="M
 - **Pipe-delimited**: Raw file uses `|` as separator
 - **Snapshot date**: November 2025 (202511)
 
-## GitHub Pages (Optional)
+## Hosting the Dashboard (For Jon)
 
-To host the dashboard publicly:
+### Option 1: View Locally (Easiest)
+1. Clone this repo or download as ZIP
+2. Open `dashboard/index.html` in any browser
+3. That's it - fully functional offline
 
-1. Push to GitHub
-2. Go to Settings > Pages
-3. Set source to `main` branch, `/dashboard` folder
-4. Access at `https://[username].github.io/federal-employment-analysis/`
+### Option 2: Host on GitHub Pages (Share a Live Link)
+1. Fork this repo to your GitHub account
+2. Go to your fork's **Settings** → **Pages**
+3. Under "Source", select **main** branch and **/dashboard** folder
+4. Click **Save**
+5. Wait 1-2 minutes, then access at:
+   ```
+   https://[your-username].github.io/federal-employment-analysis/
+   ```
+
+### VS Code Quick Start
+```bash
+# Clone the repo
+git clone https://github.com/chipphillips/federal-employment-analysis.git
+
+# Open in VS Code
+cd federal-employment-analysis
+code .
+
+# View dashboard - just open dashboard/index.html in browser
+# Or use VS Code Live Server extension for auto-refresh
+```
+
+### Running the Notebook (Optional - For Custom Analysis)
+```bash
+# Install dependencies
+pip install pandas numpy matplotlib seaborn jupyter
+
+# Start Jupyter
+jupyter notebook notebooks/01_data_exploration_and_cleaning.ipynb
+```
+
+The notebook includes helper functions for custom queries:
+- `analyze_by_column(df, 'agency')` - Quick stats on any column
+- `compare_two_groups(df, 'stem_occupation', 'STEM', 'NON-STEM')` - Side-by-side comparison
+- `filter_and_analyze(df, agency='TREASURY', education='MASTERS')` - Filtered analysis
 
 ## Requirements
 
