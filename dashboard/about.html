@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Federal Workforce Analytics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-900: #0c1929;
+            --navy-800: #1a2744;
+            --navy-700: #243352;
+            --blue-500: #3b82f6;
+            --blue-400: #60a5fa;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 100%);
+            color: var(--white);
+            padding: 2rem;
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--blue-400);
+            text-decoration: none;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-link:hover { text-decoration: underline; }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--gray-300);
+            font-size: 1rem;
+        }
+
+        .main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--navy-800);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin: 1.25rem 0 0.5rem;
+        }
+
+        .card p {
+            color: var(--gray-600);
+            margin-bottom: 1rem;
+        }
+
+        .card ul {
+            color: var(--gray-600);
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card li { margin-bottom: 0.5rem; }
+
+        .card a {
+            color: var(--blue-500);
+            text-decoration: none;
+        }
+
+        .card a:hover { text-decoration: underline; }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .feature-item {
+            background: var(--gray-50);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid var(--gray-200);
+        }
+
+        .feature-item h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--navy-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-item p {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin: 0;
+        }
+
+        .data-notice {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .data-notice p {
+            color: #92400e;
+            margin: 0;
+            font-size: 0.875rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray-500);
+            font-size: 0.8125rem;
+        }
+
+        .footer a {
+            color: var(--blue-500);
+            text-decoration: none;
+        }
+
+        .footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="back-link">&larr; Back to Dashboard</a>
+            <h1>About This Dashboard</h1>
+            <p>Understanding federal workforce data through interactive visualization</p>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="card">
+            <h2>Overview</h2>
+            <p>
+                This interactive dashboard provides comprehensive analysis of the U.S. federal civilian workforce.
+                It visualizes employment data across agencies, geographic locations, pay grades, and demographic categories
+                to help researchers, policymakers, and the public understand the composition and distribution of federal employees.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>Data Source</h2>
+            <p>
+                All data in this dashboard comes from the <strong><a href="https://www.fedscope.opm.gov/" target="_blank" rel="noopener noreferrer">U.S. Office of Personnel Management (OPM) FedScope</a></strong> database.
+                FedScope is OPM's official source for federal workforce statistics and provides public access to data about federal civilian employees.
+            </p>
+            <div class="data-notice">
+                <p>
+                    <strong>Note:</strong> Some salary data appears as "REDACTED" in the source data to protect employee privacy
+                    in cases where revealing the salary could identify specific individuals. This is standard OPM practice for
+                    positions with very few employees.
+                </p>
+            </div>
+            <p>
+                <strong>Data Snapshot:</strong> November 2025<br>
+                <strong>Total Records:</strong> 2+ million employment records<br>
+                <strong>Coverage:</strong> All federal civilian agencies
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>How to Use This Dashboard</h2>
+
+            <h3>Navigation Tabs</h3>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>Overview</h4>
+                    <p>High-level summary charts showing top agencies, salary distributions, and workforce composition.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Agencies</h4>
+                    <p>Searchable table of all federal agencies with employee counts, salaries, tenure, and grade data.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Geography</h4>
+                    <p>State-by-state analysis with interactive charts, maps, and comparison tools.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Demographics</h4>
+                    <p>Age distribution, education levels, and salary breakdowns by demographic category.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Compare</h4>
+                    <p>Side-by-side comparison tool for analyzing differences between agencies.</p>
+                </div>
+            </div>
+
+            <h3>Interactive Features</h3>
+            <ul>
+                <li><strong>Global Filters:</strong> Use the filter bar at the top to narrow data by agency, state, or pay range. All charts and tables update automatically.</li>
+                <li><strong>Click to Filter:</strong> Click on any bar in the charts or row in the tables to filter the entire dashboard to that selection.</li>
+                <li><strong>Sortable Tables:</strong> Click column headers to sort tables by any metric.</li>
+                <li><strong>Search:</strong> Use search boxes to quickly find specific agencies or states.</li>
+                <li><strong>Chart/Map Toggle:</strong> In the Geography tab, switch between bar chart and map views.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Key Metrics Explained</h2>
+            <ul>
+                <li><strong>Employee Count:</strong> Total number of federal civilian employees (not including military or contractors).</li>
+                <li><strong>Average Salary:</strong> Mean annualized adjusted basic pay across all employees in the category.</li>
+                <li><strong>Median Salary:</strong> The middle value when all salaries are arranged in order (less affected by outliers than average).</li>
+                <li><strong>Average Tenure:</strong> Mean years of federal service for employees in the category.</li>
+                <li><strong>Average Grade:</strong> Mean GS (General Schedule) grade level where applicable.</li>
+                <li><strong>STEM Occupations:</strong> Positions classified by OPM as Science, Technology, Engineering, or Mathematics related.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Technical Notes</h2>
+            <p>
+                This dashboard was built using vanilla HTML, CSS, and JavaScript with Chart.js for visualizations.
+                The underlying data was processed using Python (pandas) to aggregate the raw OPM data into optimized
+                summary files for fast browser-based rendering.
+            </p>
+            <p>
+                The source code and Jupyter notebook used for data processing are available in the
+                <a href="https://github.com/chipphillips/federal-employment-analysis" target="_blank" rel="noopener noreferrer">GitHub repository</a>.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>Contact</h2>
+            <p>
+                This analysis was created by Strategic Growth Partners. For questions or feedback about this dashboard,
+                please reach out through the GitHub repository or connect on LinkedIn.
+            </p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>
+            Data Source: <a href="https://www.fedscope.opm.gov/" target="_blank" rel="noopener noreferrer">U.S. Office of Personnel Management FedScope</a> |
+            Analysis by Strategic Growth Partners
+        </p>
+    </footer>
+</body>
+</html>
